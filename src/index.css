@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .active hr {
-  @apply block;
+  @apply visible;
 }
