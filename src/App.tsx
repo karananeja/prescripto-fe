@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import Navbar from './components/Navbar';
 import About from './pages/About';
 import Appointment from './pages/Appointment';
 import Contact from './pages/Contact';
@@ -12,7 +13,8 @@ import MyProfile from './pages/MyProfile';
 const App = () => {
   return (
     <div className='mx-4 sm:mx-[10%]'>
-      App
+      <Navbar />
+
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/contact' element={<Contact />} />
