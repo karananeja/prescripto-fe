@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { assets } from '../assets/assets';
-import { useState } from 'react';
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
