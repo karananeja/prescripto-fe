@@ -1,6 +1,6 @@
 import { assets } from '../assets/assets';
 
-const Header = () => {
+export const Header = () => {
   return (
     <div className='flex flex-col md:flex-row flex-wrap bg-primary rounded-lg px-6 md:px-10 lg:px-20'>
       <div className='md:w-1/2 flex flex-col items-start justify-center gap-4 py-10 m-auto md:py-[10vw] md:mb-[-30px]'>
@@ -36,5 +36,3 @@ const Header = () => {
     </div>
   );
 };
-
-export default Header;

@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 import { assets } from '../assets/assets';
 
-const Navbar = () => {
+export const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [token, setToken] = useState(false);
 
@@ -85,5 +85,3 @@ const Navbar = () => {
     </div>
   );
 };
-
-export default Navbar;

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { specialtyData } from '../assets/assets';
 
-const SpecialtyMenu = () => {
+export const SpecialtyMenu = () => {
   return (
     <div
       id='specialty'
@@ -35,5 +35,3 @@ const SpecialtyMenu = () => {
     </div>
   );
 };
-
-export default SpecialtyMenu;

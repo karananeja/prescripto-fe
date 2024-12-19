@@ -1,5 +1,3 @@
-const MyAppointments = () => {
+export const MyAppointments = () => {
   return <div>MyAppointments</div>;
 };
-
-export default MyAppointments;

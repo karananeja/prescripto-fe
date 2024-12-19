@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '../context/AppContext';
 
-const TopDoctors = () => {
+export const TopDoctors = () => {
   const { doctors } = useAppContext();
   const navigate = useNavigate();
 
@@ -44,5 +44,3 @@ const TopDoctors = () => {
     </div>
   );
 };
-
-export default TopDoctors;
