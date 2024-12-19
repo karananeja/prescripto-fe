@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
 export const TopDoctors = () => {
-  const { doctors } = useAppContext();
   const navigate = useNavigate();
+
+  const { doctors } = useAppContext();
 
   return (
     <div className='flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10'>
