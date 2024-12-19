@@ -10,7 +10,7 @@ import { Login } from './pages/Login';
 import { MyAppointments } from './pages/MyAppointments';
 import { MyProfile } from './pages/MyProfile';
 
-const App = () => {
+export const App = () => {
   return (
     <div className='mx-4 sm:mx-[10%]'>
       <Navbar />
@@ -29,5 +29,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;
