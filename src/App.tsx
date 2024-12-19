@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
 import { About } from './pages/About';
 import { Appointment } from './pages/Appointment';
@@ -26,6 +27,8 @@ export const App = () => {
         <Route path='/my-appointments' element={<MyAppointments />} />
         <Route path='/appointment/:docId' element={<Appointment />} />
       </Routes>
+
+      <Footer />
     </div>
   );
 };
