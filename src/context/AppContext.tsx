@@ -4,12 +4,13 @@ import { doctors } from '../assets/assets';
 
 type PropsType = { children: ReactNode };
 
-type AppContextType = { doctors: typeof doctors };
+type AppContextType = { currencySymbol: string; doctors: typeof doctors };
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export const AppContextProvider = ({ children }: PropsType) => {
-  const value = { doctors };
+  const currencySymbol = '₹';
+  const value: AppContextType = { currencySymbol, doctors };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
