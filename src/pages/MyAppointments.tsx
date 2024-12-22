@@ -15,7 +15,7 @@ export const MyAppointments = () => {
           key={doctor._id}
         >
           <img
-            className='w-32 bg-indigo-50'
+            className='size-32 bg-indigo-50'
             src={doctor.image}
             alt='doctor-image'
           />
@@ -33,6 +33,8 @@ export const MyAppointments = () => {
               23, Dec, 2024 | 8:30 PM
             </p>
           </div>
+
+          <div />
 
           <div className='flex flex-col gap-2 justify-end'>
             <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300'>
