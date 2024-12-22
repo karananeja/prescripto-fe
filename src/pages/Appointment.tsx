@@ -11,8 +11,11 @@ const DAYS_OF_WEEK = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 const getSlots = () => {
   const today = new Date();
   const timeSlots: { datetime: Date; time: string }[][] = [];
+  const isLateEvening = today.getHours() >= 21;
+  const startIdx = isLateEvening ? 1 : 0;
+  const endIdx = startIdx + 7;
 
-  for (let idx = 0; idx < 7; idx++) {
+  for (let idx = startIdx; idx < endIdx; idx++) {
     const currentDate = new Date(today);
     currentDate.setDate(today.getDate() + idx);
 
