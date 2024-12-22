@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { assets } from '../assets/assets';
+import { cn } from '../utils';
+
+const PATH_OPTIONS = [
+  { path: '/', label: 'HOME' },
+  { path: '/doctors', label: 'ALL DOCTORS' },
+  { path: '/about', label: 'ABOUT' },
+  { path: '/contact', label: 'CONTACT' },
+];
 
 export const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -12,32 +20,28 @@ export const Navbar = () => {
   return (
     <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
       <img
-        onClick={() => navigate('/')}
         className='w-44 cursor-pointer'
         src={assets.logo}
         alt='app-logo'
+        onClick={() => navigate('/')}
       />
 
       <ul className='hidden md:flex items-start gap-5 font-medium'>
-        <NavLink to='/'>
-          <li className='py-1'>HOME</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto invisible' />
-        </NavLink>
-
-        <NavLink to='/doctors'>
-          <li className='py-1'>ALL DOCTORS</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto invisible' />
-        </NavLink>
-
-        <NavLink to='/about'>
-          <li className='py-1'>ABOUT</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto invisible' />
-        </NavLink>
-
-        <NavLink to='/contact'>
-          <li className='py-1'>CONTACT</li>
-          <hr className='border-none outline-none h-0.5 bg-primary w-3/5 m-auto invisible' />
-        </NavLink>
+        {PATH_OPTIONS.map((option) => (
+          <NavLink key={option.path} to={option.path}>
+            {({ isActive }) => (
+              <>
+                <li className='py-1'>{option.label}</li>
+                <hr
+                  className={cn(
+                    'border-none outline-none h-0.5 bg-primary w-3/5 m-auto invisible',
+                    isActive && 'visible'
+                  )}
+                />
+              </>
+            )}
+          </NavLink>
+        ))}
       </ul>
 
       <div className='flex items-center gap-4'>
@@ -86,6 +90,53 @@ export const Navbar = () => {
             Create Account
           </button>
         )}
+
+        <img
+          className='w-6 md:hidden cursor-pointer'
+          src={assets.menu_icon}
+          alt='menu-icon'
+          onClick={() => setShowMenu(true)}
+        />
+
+        <div
+          className={cn(
+            'md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all',
+            showMenu ? 'fixed w-full' : 'size-0'
+          )}
+        >
+          <div className='flex items-center justify-between px-5 py-6'>
+            <img
+              className='w-36 cursor-pointer'
+              src={assets.logo}
+              alt='app-logo'
+              onClick={() => navigate('/')}
+            />
+            <img
+              className='size-7 cursor-pointer'
+              src={assets.cross_icon}
+              alt='cross-icon'
+              onClick={() => setShowMenu(false)}
+            />
+          </div>
+
+          <ul className='flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium'>
+            {PATH_OPTIONS.map((option) => (
+              <NavLink
+                key={option.path}
+                className={({ isActive }) =>
+                  cn(
+                    'px-4 py-2 rounded inline-block',
+                    isActive && 'text-white bg-primary'
+                  )
+                }
+                to={option.path}
+                onClick={() => setShowMenu(false)}
+              >
+                {option.label}
+              </NavLink>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

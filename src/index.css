@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.active hr {
-  @apply visible;
-}
-
 ::-webkit-scrollbar {
   @apply hidden;
 }
