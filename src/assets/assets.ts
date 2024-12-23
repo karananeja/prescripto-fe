@@ -99,13 +99,13 @@ export const doctors = [
   },
   {
     _id: 'doc3',
-    name: 'Dr. Sarah Patel',
+    name: 'Dr. Arjun Patel',
     image: doc3,
     specialty: 'Dermatologist',
     degree: 'MBBS',
     experience: '1 Years',
     about:
-      'Dr. Sarah Patel, a skilled dermatologist with 1 year of experience, specializes in skin care, treating a wide range of dermatological conditions. She is passionate about improving the skin health and appearance of her patients through personalized treatment plans.',
+      'Dr. Arjun Patel, a skilled dermatologist with 1 year of experience, specializes in skin care, treating a wide range of dermatological conditions. He is passionate about improving the skin health and appearance of his patients through personalized treatment plans.',
     fees: 300,
     address: {
       line1: '37th Cross, Richmond',
