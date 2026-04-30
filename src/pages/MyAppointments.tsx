@@ -5,29 +5,29 @@ export const MyAppointments = () => {
 
   return (
     <>
-      <p className='pb-3 mt-12 font-medium text-zinc-700 border-b'>
+      <p className='mt-12 pb-3 border-b font-medium text-zinc-700'>
         My Appointments
       </p>
 
       {doctors.slice(0, 3).map((doctor) => (
         <div
-          className='grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b'
+          className='sm:flex gap-4 sm:gap-6 grid grid-cols-[1fr_2fr] py-2 border-b'
           key={doctor._id}
         >
           <img
-            className='size-32 bg-indigo-50'
+            className='bg-indigo-50 size-32'
             src={doctor.image}
             alt='doctor-image'
           />
 
-          <div className='flex-1 text-sm text-zinc-600'>
-            <p className='text-neutral-800 font-semibold'>{doctor.name}</p>
+          <div className='flex-1 text-zinc-600 text-sm'>
+            <p className='font-semibold text-neutral-800'>{doctor.name}</p>
             <p>{doctor.specialty}</p>
-            <p className='text-zinc-700 font-medium mt-1'>Address:</p>
+            <p className='mt-1 font-medium text-zinc-700'>Address:</p>
             <p className='text-xs'>{doctor.address.line1}</p>
             <p className='text-xs'>{doctor.address.line2}</p>
-            <p className='text-xs mt-1'>
-              <span className='text-sm text-neutral-700 font-medium'>
+            <p className='mt-1 text-xs'>
+              <span className='font-medium text-neutral-700 text-sm'>
                 Date & Time:
               </span>{' '}
               23, Dec, 2024 | 8:30 PM
@@ -36,11 +36,11 @@ export const MyAppointments = () => {
 
           <div />
 
-          <div className='flex flex-col gap-2 justify-end'>
-            <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300'>
+          <div className='flex flex-col justify-end gap-2'>
+            <button className='hover:bg-primary py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'>
               Pay Online
             </button>
-            <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300'>
+            <button className='hover:bg-red-600 py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'>
               Cancel Appointment
             </button>
           </div>

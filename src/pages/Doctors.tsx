@@ -37,10 +37,10 @@ export const Doctors = () => {
     <>
       <p className='text-gray-600'>Browse through the doctors specialist.</p>
 
-      <div className='flex flex-col sm:flex-row items-start gap-5 mt-5'>
+      <div className='flex sm:flex-row flex-col items-start gap-5 mt-5'>
         <button
           className={cn(
-            'py-1 px-3 border rounded text-sm transition-all sm:hidden',
+            'sm:hidden px-3 py-1 border rounded text-sm transition-all',
             showFilter && 'bg-primary text-white'
           )}
           onClick={() => setShowFilter(!showFilter)}
@@ -50,7 +50,7 @@ export const Doctors = () => {
 
         <div
           className={cn(
-            'flex-col gap-4 text-sm text-gray-600',
+            'flex-col gap-4 text-gray-600 text-sm',
             showFilter ? 'flex' : 'hidden sm:flex'
           )}
         >
@@ -58,7 +58,7 @@ export const Doctors = () => {
             <p
               key={item}
               className={cn(
-                'w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer',
+                'py-1.5 pr-16 pl-3 border border-gray-300 rounded w-[94vw] sm:w-auto transition-all cursor-pointer',
                 { 'bg-indigo-100 text-black': specialty === item }
               )}
               onClick={() => filterDoctors(item)}
@@ -68,14 +68,14 @@ export const Doctors = () => {
           ))}
         </div>
 
-        <div className='w-full grid grid-cols-auto gap-4 gap-y-6'>
+        <div className='gap-4 gap-y-6 grid grid-cols-auto w-full'>
           {filterDocs.map((doctor) => (
             <div
               onClick={() => {
                 navigate(`/appointment/${doctor._id}`);
                 scrollTo(0, 0);
               }}
-              className='border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500'
+              className='border border-blue-200 rounded-xl overflow-hidden transition-all hover:translate-y-[-10px] duration-500 cursor-pointer'
               key={doctor._id}
             >
               <img
@@ -84,11 +84,11 @@ export const Doctors = () => {
                 alt='doctor-image'
               />
               <div className='p-4'>
-                <div className='flex items-center gap-2 text-sm text-center text-green-500'>
-                  <span className='size-2 bg-green-500 rounded-full' />
+                <div className='flex items-center gap-2 text-green-500 text-sm text-center'>
+                  <span className='bg-green-500 rounded-full size-2' />
                   <p className=''>Available</p>
                 </div>
-                <p className='text-gray-900 text-lg font-medium'>
+                <p className='font-medium text-gray-900 text-lg'>
                   {doctor.name}
                 </p>
                 <p className='text-gray-600 text-sm'>{doctor.specialty}</p>

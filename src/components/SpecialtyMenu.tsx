@@ -8,9 +8,9 @@ export const SpecialtyMenu = () => {
       id='specialty'
       className='flex flex-col items-center gap-4 py-16 text-gray-900'
     >
-      <h1 className='text-3xl font-medium'>Find by Specialty</h1>
+      <h1 className='font-medium text-3xl'>Find by Specialty</h1>
 
-      <p className='sm:w-1/3 text-center text-sm'>
+      <p className='sm:w-1/3 text-sm text-center'>
         Simply browse through our extensive list of trusted doctors, schedule
         your appointment hassle-free.
       </p>
@@ -18,13 +18,13 @@ export const SpecialtyMenu = () => {
       <div className='flex sm:justify-center gap-4 pt-5 w-full overflow-scroll'>
         {specialtyData.map((data) => (
           <Link
-            className='flex flex-col items-center text-xs cursor-pointer flex-shrink-0 hover:translate-y-[-10px] transition-all duration-500'
+            className='flex flex-col flex-shrink-0 items-center text-xs transition-all hover:translate-y-[-10px] duration-500 cursor-pointer'
             to={`/doctors/${data.specialty}`}
             key={data.specialty}
             onClick={() => scrollTo(0, 0)}
           >
             <img
-              className='w-16 sm:w-24 mb-2'
+              className='mb-2 w-16 sm:w-24'
               src={data.image}
               alt={data.specialty}
             />

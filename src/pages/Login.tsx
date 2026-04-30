@@ -12,9 +12,9 @@ export const Login = () => {
   };
 
   return (
-    <form className='min-h-[80vh] flex items-center' onSubmit={handleSubmit}>
-      <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-80 sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg'>
-        <p className='text-2xl font-semibold'>
+    <form className='flex items-center min-h-[80vh]' onSubmit={handleSubmit}>
+      <div className='flex flex-col items-start gap-3 shadow-lg m-auto p-8 border rounded-xl min-w-80 sm:min-w-96 text-zinc-600 text-sm'>
+        <p className='font-semibold text-2xl'>
           {isLogin ? 'Login' : 'Create Account'}
         </p>
         <p>Please {isLogin ? 'log in' : 'sign up'} to book appointment</p>
@@ -23,7 +23,7 @@ export const Login = () => {
           <div className='w-full'>
             <p>Full Name</p>
             <input
-              className='border border-zinc-300 rounded w-full p-2 mt-1'
+              className='mt-1 p-2 border border-zinc-300 rounded w-full'
               type='text'
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -35,7 +35,7 @@ export const Login = () => {
         <div className='w-full'>
           <p>Email</p>
           <input
-            className='border border-zinc-300 rounded w-full p-2 mt-1'
+            className='mt-1 p-2 border border-zinc-300 rounded w-full'
             type='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -46,7 +46,7 @@ export const Login = () => {
         <div className='w-full'>
           <p>Password</p>
           <input
-            className='border border-zinc-300 rounded w-full p-2 mt-1'
+            className='mt-1 p-2 border border-zinc-300 rounded w-full'
             type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -54,7 +54,7 @@ export const Login = () => {
           />
         </div>
 
-        <button className='bg-primary text-white w-full py-2 my-2 rounded-md text-base'>
+        <button className='bg-primary my-2 py-2 rounded-md w-full text-white text-base'>
           {isLogin ? 'Login' : 'Create Account'}
         </button>
 

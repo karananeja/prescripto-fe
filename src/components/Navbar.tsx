@@ -18,7 +18,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
+    <div className='flex justify-between items-center mb-5 py-4 border-b border-b-gray-400 text-sm'>
       <img
         className='w-44 cursor-pointer'
         src={assets.logo}
@@ -34,7 +34,7 @@ export const Navbar = () => {
                 <li className='py-1'>{option.label}</li>
                 <hr
                   className={cn(
-                    'border-none outline-none h-0.5 bg-primary w-3/5 m-auto invisible',
+                    'invisible bg-primary m-auto border-none outline-none w-3/5 h-0.5',
                     isActive && 'visible'
                   )}
                 />
@@ -46,9 +46,9 @@ export const Navbar = () => {
 
       <div className='flex items-center gap-4'>
         {token ? (
-          <div className='flex items-center gap-2 cursor-pointer group relative'>
+          <div className='group relative flex items-center gap-2 cursor-pointer'>
             <img
-              className='w-8 rounded-full'
+              className='rounded-full w-8'
               src={assets.profile_pic}
               alt='user-picture'
             />
@@ -59,8 +59,8 @@ export const Navbar = () => {
               alt='more-options'
             />
 
-            <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
-              <div className='min-w-48 bg-stone-100 rounded flex flex-col gap-4 p-4'>
+            <div className='hidden group-hover:block top-0 right-0 z-20 absolute pt-14 font-medium text-gray-600 text-base'>
+              <div className='flex flex-col gap-4 bg-stone-100 p-4 rounded min-w-48'>
                 <p
                   className='hover:text-black cursor-pointer'
                   onClick={() => navigate('/my-profile')}
@@ -84,7 +84,7 @@ export const Navbar = () => {
           </div>
         ) : (
           <button
-            className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block'
+            className='hidden md:block bg-primary px-8 py-3 rounded-full font-light text-white'
             onClick={() => navigate('/login')}
           >
             Create Account
@@ -92,7 +92,7 @@ export const Navbar = () => {
         )}
 
         <img
-          className='w-6 md:hidden cursor-pointer'
+          className='md:hidden w-6 cursor-pointer'
           src={assets.menu_icon}
           alt='menu-icon'
           onClick={() => setShowMenu(true)}
@@ -100,11 +100,11 @@ export const Navbar = () => {
 
         <div
           className={cn(
-            'md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all',
+            'md:hidden top-0 right-0 bottom-0 z-20 bg-white overflow-hidden transition-all',
             showMenu ? 'fixed w-full' : 'size-0'
           )}
         >
-          <div className='flex items-center justify-between px-5 py-6'>
+          <div className='flex justify-between items-center px-5 py-6'>
             <img
               className='w-36 cursor-pointer'
               src={assets.logo}
@@ -119,13 +119,13 @@ export const Navbar = () => {
             />
           </div>
 
-          <ul className='flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium'>
+          <ul className='flex flex-col items-center gap-2 mt-5 px-5 font-medium text-lg'>
             {PATH_OPTIONS.map((option) => (
               <NavLink
                 key={option.path}
                 className={({ isActive }) =>
                   cn(
-                    'px-4 py-2 rounded inline-block',
+                    'inline-block px-4 py-2 rounded',
                     isActive && 'text-white bg-primary'
                   )
                 }

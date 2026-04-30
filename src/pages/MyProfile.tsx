@@ -17,12 +17,12 @@ export const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   return (
-    <div className='max-w-lg flex flex-col gap-2 text-sm'>
-      <img className='w-36 rounded' src={userData.image} alt='profile-pic' />
+    <div className='flex flex-col gap-2 max-w-lg text-sm'>
+      <img className='rounded w-36' src={userData.image} alt='profile-pic' />
 
       {isEdit ? (
         <input
-          className='bg-gray-100 text-3xl font-medium max-w-60 mt-4'
+          className='bg-gray-100 mt-4 max-w-60 font-medium text-3xl'
           type='text'
           value={userData.name}
           onChange={(e) =>
@@ -30,16 +30,16 @@ export const MyProfile = () => {
           }
         />
       ) : (
-        <p className='text-3xl font-medium text-neutral-800 mt-4'>
+        <p className='mt-4 font-medium text-neutral-800 text-3xl'>
           {userData.name}
         </p>
       )}
 
-      <hr className='bg-zinc-400 h-[1px] border-none' />
+      <hr className='bg-zinc-400 border-none h-[1px]' />
 
-      <p className='text-neutral-500 underline mt-3'>CONTACT INFORMATION</p>
+      <p className='mt-3 text-neutral-500 underline'>CONTACT INFORMATION</p>
 
-      <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700'>
+      <div className='gap-y-2.5 grid grid-cols-[1fr_3fr] mt-3 text-neutral-700'>
         <p className='font-medium'>Email ID:</p>
         <p className='text-blue-500'>{userData.email}</p>
 
@@ -84,16 +84,16 @@ export const MyProfile = () => {
             />
           </p>
         ) : (
-          <p className='text-gray-500 flex flex-col gap-2'>
+          <p className='flex flex-col gap-2 text-gray-500'>
             <span>{userData.address.line1}</span>
             <span>{userData.address.line2}</span>
           </p>
         )}
       </div>
 
-      <p className='text-neutral-500 underline mt-3'>BASIC INFORMATION</p>
+      <p className='mt-3 text-neutral-500 underline'>BASIC INFORMATION</p>
 
-      <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-neutral-700'>
+      <div className='gap-y-2.5 grid grid-cols-[1fr_3fr] mt-3 text-neutral-700'>
         <p className='font-medium'>Gender:</p>
         {isEdit ? (
           <select
@@ -131,14 +131,14 @@ export const MyProfile = () => {
       <div className='mt-10'>
         {isEdit ? (
           <button
-            className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all duration-300'
+            className='hover:bg-primary px-8 py-2 border border-primary rounded-full hover:text-white transition-all duration-300'
             onClick={() => setIsEdit(!isEdit)}
           >
             Save Information
           </button>
         ) : (
           <button
-            className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all duration-300'
+            className='hover:bg-primary px-8 py-2 border border-primary rounded-full hover:text-white transition-all duration-300'
             onClick={() => setIsEdit(!isEdit)}
           >
             Edit

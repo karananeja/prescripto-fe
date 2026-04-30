@@ -3,18 +3,18 @@ import { assets } from '../assets/assets';
 export const About = () => {
   return (
     <>
-      <p className='text-center text-2xl pt-10 text-gray-500'>
-        ABOUT <span className='text-gray-700 font-semibold'>US</span>
+      <p className='pt-10 text-gray-500 text-2xl text-center'>
+        ABOUT <span className='font-semibold text-gray-700'>US</span>
       </p>
 
-      <div className='my-10 flex flex-col md:flex-row gap-12'>
+      <div className='flex md:flex-row flex-col gap-12 my-10'>
         <img
           className='w-full md:max-w-[22.5rem]'
           src={assets.about_image}
           alt='about-logo'
         />
 
-        <div className='flex flex-col justify-center gap-6 md:w-1/2 text-sm text-gray-600'>
+        <div className='flex flex-col justify-center gap-6 md:w-1/2 text-gray-600 text-sm'>
           <p>
             Welcome to Prescripto, your trusted partner in managing your
             healthcare needs conveniently and efficiently. At Prescripto, we
@@ -39,28 +39,28 @@ export const About = () => {
         </div>
       </div>
 
-      <div className='text-xl my-4'>
+      <div className='my-4 text-xl'>
         <p>
-          WHY <span className='text-gray-700 font-semibold'>CHOOSE US</span>
+          WHY <span className='font-semibold text-gray-700'>CHOOSE US</span>
         </p>
       </div>
 
-      <div className='flex flex-col md:flex-row mb-20'>
-        <div className='border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transition-all duration-300 text-gray-600 cursor-pointer'>
+      <div className='flex md:flex-row flex-col mb-20'>
+        <div className='flex flex-col gap-5 hover:bg-primary px-10 md:px-16 py-8 sm:py-16 border text-[15px] text-gray-600 hover:text-white transition-all duration-300 cursor-pointer'>
           <b>EFFICIENCY:</b>
           <p>
             Streamlined appointment scheduling that fits into your busy
             lifestyle.
           </p>
         </div>
-        <div className='border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transition-all duration-300 text-gray-600 cursor-pointer'>
+        <div className='flex flex-col gap-5 hover:bg-primary px-10 md:px-16 py-8 sm:py-16 border text-[15px] text-gray-600 hover:text-white transition-all duration-300 cursor-pointer'>
           <b>CONVENIENCE:</b>
           <p>
             Access to a network of trusted healthcare professionals in your
             area.
           </p>
         </div>
-        <div className='border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transition-all duration-300 text-gray-600 cursor-pointer'>
+        <div className='flex flex-col gap-5 hover:bg-primary px-10 md:px-16 py-8 sm:py-16 border text-[15px] text-gray-600 hover:text-white transition-all duration-300 cursor-pointer'>
           <b>PERSONALIZATION:</b>
           <p>
             Tailored recommendations and reminders to help you stay on top of

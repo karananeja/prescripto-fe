@@ -70,15 +70,15 @@ export const Appointment = () => {
   return (
     doctorInfo && (
       <>
-        <div className='flex flex-col sm:flex-row gap-4'>
+        <div className='flex sm:flex-row flex-col gap-4'>
           <img
-            className='bg-primary w-full sm:max-w-72 rounded-lg'
+            className='bg-primary rounded-lg w-full sm:max-w-72'
             src={doctorInfo.image}
             alt='doctor-image'
           />
 
-          <div className='flex-1 border border-gray-400 rounded-lg px-8 py-7 bg-white mx-2 sm:mx-0 -mt-20 sm:mt-0'>
-            <p className='flex items-center gap-2 text-3xl font-medium text-gray-900'>
+          <div className='flex-1 bg-white mx-2 sm:mx-0 -mt-20 sm:mt-0 px-8 py-7 border border-gray-400 rounded-lg'>
+            <p className='flex items-center gap-2 font-medium text-gray-900 text-3xl'>
               {doctorInfo.name}
               <img
                 className='w-5'
@@ -91,23 +91,23 @@ export const Appointment = () => {
               <p>
                 {doctorInfo.degree} - {doctorInfo.specialty}
               </p>
-              <button className='py-0.5 px-2 border text-xs rounded-full'>
+              <button className='px-2 py-0.5 border rounded-full text-xs'>
                 {doctorInfo.experience}
               </button>
             </div>
 
             <>
-              <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>
+              <p className='flex items-center gap-1 mt-3 font-medium text-gray-900 text-sm'>
                 About
                 <img className='w-3' src={assets.info_icon} alt='info-icon' />
               </p>
 
-              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>
+              <p className='mt-1 max-w-[700px] text-gray-500 text-sm'>
                 {doctorInfo.about}
               </p>
             </>
 
-            <p className='text-gray-600 font-medium mt-4'>
+            <p className='mt-4 font-medium text-gray-600'>
               Appointment fee:{' '}
               <span className='text-gray-800'>
                 {currencySymbol}
@@ -117,14 +117,14 @@ export const Appointment = () => {
           </div>
         </div>
 
-        <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-gray-700'>
+        <div className='mt-8 sm:ml-72 sm:pl-4 font-medium text-gray-700'>
           <p>Booking slots</p>
 
-          <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
+          <div className='flex items-center gap-3 mt-4 w-full overflow-x-scroll'>
             {doctorSlots.map((daySlots, idx) => (
               <div
                 className={cn(
-                  'text-center py-6 min-w-16 rounded-full cursor-pointer border border-gray-200',
+                  'py-6 border border-gray-200 rounded-full min-w-16 text-center cursor-pointer',
                   { 'bg-primary text-white': idx === slotIndex }
                 )}
                 key={idx}
@@ -138,11 +138,11 @@ export const Appointment = () => {
             ))}
           </div>
 
-          <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
+          <div className='flex items-center gap-3 mt-4 w-full overflow-x-scroll'>
             {doctorSlots[slotIndex].map((slot) => (
               <p
                 className={cn(
-                  'text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer text-gray-400 border border-gray-300',
+                  'flex-shrink-0 px-5 py-2 border border-gray-300 rounded-full font-light text-gray-400 text-sm cursor-pointer',
                   { 'bg-primary text-white': slot.time === slotTime }
                 )}
                 key={slot.time}
@@ -153,7 +153,7 @@ export const Appointment = () => {
             ))}
           </div>
 
-          <button className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>
+          <button className='bg-primary my-6 px-20 py-3 rounded-full font-light text-white text-sm'>
             Book an appointment
           </button>
         </div>
