@@ -133,7 +133,7 @@ export const MyProfile = () => {
           <div className='flex gap-2'>
             <button
               onClick={() => setIsEdit(!isEdit)}
-              className='hover:bg-red-500 px-8 py-2 border rounded-full hover:text-white transition-all duration-300'
+              className='hover:bg-red-600 px-8 py-2 border rounded-full hover:text-white transition-all duration-300'
             >
               Cancel
             </button>
