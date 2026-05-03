@@ -111,7 +111,7 @@ export const Appointment = () => {
               Appointment fee:{' '}
               <span className='text-gray-800'>
                 {currencySymbol}
-                {doctorInfo.fees}
+                {doctorInfo.fee}
               </span>
             </p>
           </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { assets } from '../assets/assets';
+import { useAppContext } from '../context/AppContext';
 import { cn } from '../utils';
 
 const PATH_OPTIONS = [
@@ -12,10 +13,16 @@ const PATH_OPTIONS = [
 ];
 
 export const Navbar = () => {
+  const { token, setUserToken } = useAppContext();
+
   const [showMenu, setShowMenu] = useState(false);
-  const [token, setToken] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setUserToken('');
+    navigate('/login');
+  };
 
   return (
     <div className='flex justify-between items-center mb-5 py-4 border-b border-b-gray-400 text-sm'>
@@ -75,7 +82,7 @@ export const Navbar = () => {
                 </p>
                 <p
                   className='hover:text-black cursor-pointer'
-                  onClick={() => setToken(false)}
+                  onClick={handleLogout}
                 >
                   Logout
                 </p>

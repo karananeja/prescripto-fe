@@ -1,7 +1,11 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import { Footer } from './components/Footer';
 import { Navbar } from './components/Navbar';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { About } from './pages/About';
 import { Appointment } from './pages/Appointment';
 import { Contact } from './pages/Contact';
@@ -23,12 +27,27 @@ export const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/doctors' element={<Doctors />} />
         <Route path='/doctors/:specialty' element={<Doctors />} />
-        <Route path='/my-profile' element={<MyProfile />} />
-        <Route path='/my-appointments' element={<MyAppointments />} />
+        <Route
+          path='/my-profile'
+          element={
+            <ProtectedRoute>
+              <MyProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/my-appointments'
+          element={
+            <ProtectedRoute>
+              <MyAppointments />
+            </ProtectedRoute>
+          }
+        />
         <Route path='/appointment/:docId' element={<Appointment />} />
       </Routes>
 
       <Footer />
+      <ToastContainer />
     </div>
   );
 };

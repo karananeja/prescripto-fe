@@ -1,15 +1,41 @@
 import { FormEvent, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { useAppContext } from '../context/AppContext';
+import { api } from '../lib/api-client';
 
 export const Login = () => {
+  const { setUserToken, token } = useAppContext();
+
   const [isLogin, setIsLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log({ email, password, name });
+
+    try {
+      if (!isLogin) {
+        const res = await api.post('/user/register', { name, email, password });
+        setUserToken(res.data.token);
+        toast.success(res.data.message);
+      } else {
+        const res = await api.post('/user/login', { email, password });
+        setUserToken(res.data.token);
+        toast.success(res.data.message);
+      }
+
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  if (token) return <Navigate to='/' />;
 
   return (
     <form className='flex items-center min-h-[80vh]' onSubmit={handleSubmit}>

@@ -1,20 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-import { assets } from '../assets/assets';
+import { api } from '../lib/api-client';
+
+interface UserData {
+  name: string;
+  email: string;
+  image: string;
+  address: { line1: string; line2: string };
+  gender: string;
+  dob: string;
+  phone: string;
+}
 
 const GENDER_OPTIONS = ['Male', 'Female'];
 
 export const MyProfile = () => {
-  const [userData, setUserData] = useState({
-    name: 'Michael Williams',
-    image: assets.profile_pic,
-    phone: '+81 965-431-3024',
-    email: 'michael.williams@x.dummyjson.com',
-    address: { line1: '626 Main Street', line2: 'Phoenix Mississippi' },
-    gender: 'Male',
-    dob: '1989-8-10',
+  const [userData, setUserData] = useState<UserData>({
+    name: '',
+    email: '',
+    image: '',
+    address: { line1: '', line2: '' },
+    gender: '',
+    dob: '',
+    phone: '',
   });
   const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const res = await api.get('/user/get-user-info');
+        setUserData(res.data.user);
+      } catch (error) {
+        toast.error((error as Error).message);
+        console.error(error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <div className='flex flex-col gap-2 max-w-lg text-sm'>

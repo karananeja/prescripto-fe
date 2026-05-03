@@ -1,16 +1,70 @@
-import { createContext, ReactNode, useContext } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { toast } from 'react-toastify';
 
-import { doctors } from '../assets/assets';
+import { api } from '../lib/api-client';
 
 type PropsType = { children: ReactNode };
 
-type AppContextType = { currencySymbol: string; doctors: typeof doctors };
+interface Doctor {
+  _id: string;
+  name: string;
+  email: string;
+  experience: string;
+  fee: number;
+  specialty: string;
+  degree: string;
+  address: { line1: string; line2: string };
+  about: string;
+  image: string;
+  available: boolean;
+}
+
+type AppContextType = {
+  currencySymbol: string;
+  doctors: Doctor[];
+  setUserToken: (token: string) => void;
+  token: string;
+};
 
 const AppContext = createContext<AppContextType | null>(null);
 
 export const AppContextProvider = ({ children }: PropsType) => {
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [token, setToken] = useState(localStorage.getItem('userToken') || '');
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const res = await api.get('/doctor/get-all-doctors');
+        setDoctors(res.data.doctors);
+      } catch (error) {
+        toast.error((error as Error).message);
+        console.error(error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
+  const setUserToken = (token: string) => {
+    localStorage.setItem('userToken', token);
+    setToken(token);
+    if (!token) localStorage.removeItem('userToken');
+  };
+
   const currencySymbol = '₹';
-  const value: AppContextType = { currencySymbol, doctors };
+  const value: AppContextType = {
+    currencySymbol,
+    doctors,
+    setUserToken,
+    token,
+  };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
