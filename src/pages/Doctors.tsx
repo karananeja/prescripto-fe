@@ -8,7 +8,7 @@ const SPECIALTIES = [
   'General physician',
   'Gynecologist',
   'Dermatologist',
-  'Pediatricians',
+  'Pediatrician',
   'Neurologist',
   'Gastroenterologist',
 ];
