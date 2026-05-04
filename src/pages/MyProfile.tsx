@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 
+import { assets } from '../assets/assets';
+import { useAppContext } from '../context/AppContext';
 import { api } from '../lib/api-client';
 
 interface UserData {
@@ -15,8 +17,23 @@ interface UserData {
 
 const GENDER_OPTIONS = ['Male', 'Female'];
 
-export const MyProfile = () => {
-  const [userData, setUserData] = useState<UserData>({
+type State = {
+  userData: UserData;
+  isEdit: boolean;
+  imageFile: File | null;
+  preview: string | null;
+};
+
+type Action =
+  | { type: 'SET_USER'; payload: UserData }
+  | { type: 'SET_FIELD'; field: keyof UserData; value: string }
+  | { type: 'SET_ADDRESS'; field: 'line1' | 'line2'; value: string }
+  | { type: 'SET_IMAGE'; file: File | null }
+  | { type: 'SET_PREVIEW'; url: string | null }
+  | { type: 'TOGGLE_EDIT' };
+
+const initialState: State = {
+  userData: {
     name: '',
     email: '',
     image: '',
@@ -24,35 +41,151 @@ export const MyProfile = () => {
     gender: '',
     dob: '',
     phone: '',
-  });
-  const [isEdit, setIsEdit] = useState(false);
+  },
+  isEdit: false,
+  imageFile: null,
+  preview: null,
+};
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'SET_USER':
+      return { ...state, userData: action.payload };
+
+    case 'SET_FIELD':
+      return {
+        ...state,
+        userData: { ...state.userData, [action.field]: action.value },
+      };
+
+    case 'SET_ADDRESS':
+      return {
+        ...state,
+        userData: {
+          ...state.userData,
+          address: { ...state.userData.address, [action.field]: action.value },
+        },
+      };
+
+    case 'SET_IMAGE':
+      return { ...state, imageFile: action.file };
+
+    case 'SET_PREVIEW':
+      return { ...state, preview: action.url };
+
+    case 'TOGGLE_EDIT':
+      return { ...state, isEdit: !state.isEdit };
+
+    default:
+      return state;
+  }
+}
+
+export const MyProfile = () => {
+  const { userDetails } = useAppContext();
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const { userData, isEdit, preview, imageFile } = state;
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const res = await api.get('/user/get-user-info');
-        setUserData(res.data.user);
-      } catch (error) {
-        toast.error((error as Error).message);
-        console.error(error);
-      }
+    dispatch({ type: 'SET_USER', payload: userDetails });
+  }, [userDetails]);
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
+
+  const handleChange =
+    (field: keyof UserData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      dispatch({ type: 'SET_FIELD', field, value: e.target.value });
     };
 
-    fetchUserData();
-  }, []);
+  const handleAddressChange =
+    (field: 'line1' | 'line2') => (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch({ type: 'SET_ADDRESS', field, value: e.target.value });
+    };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+
+    dispatch({ type: 'SET_IMAGE', file });
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      dispatch({ type: 'SET_PREVIEW', url });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+
+      formData.append('name', userData.name);
+      formData.append('phone', userData.phone);
+      formData.append('gender', userData.gender);
+      formData.append('dob', userData.dob);
+      formData.append('address', JSON.stringify(userData.address));
+
+      if (imageFile) formData.append('image', imageFile);
+
+      const res = await api.put('/user/update-user-info', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      toast.success(res.data.message);
+      dispatch({ type: 'SET_USER', payload: res.data.user });
+      dispatch({ type: 'TOGGLE_EDIT' });
+    } catch (error) {
+      toast.error((error as Error).message);
+      console.error(error);
+    }
+  };
 
   return (
-    <div className='flex flex-col gap-2 max-w-lg text-sm'>
-      <img className='rounded w-36' src={userData.image} alt='profile-pic' />
+    <form
+      onSubmit={handleSubmit}
+      className='flex flex-col gap-2 max-w-lg text-sm'
+    >
+      {isEdit ? (
+        <>
+          <label htmlFor='image-upload ' className='h-36'>
+            <div className='inline-block relative cursor-pointer'>
+              <img
+                className='opacity-75 rounded w-36'
+                src={preview || userData.image}
+                alt='profile'
+              />
+              <img
+                className='right-12 bottom-12 absolute w-10'
+                src={assets.upload_icon}
+                alt=''
+              />
+            </div>
+          </label>
+          <input
+            type='file'
+            id='image-upload'
+            hidden
+            onChange={handleImageChange}
+            required={!userData.image}
+          />
+        </>
+      ) : (
+        <img className='rounded w-36' src={userData.image} alt='profile' />
+      )}
 
       {isEdit ? (
         <input
+          required
           className='bg-gray-100 mt-4 max-w-60 font-medium text-3xl'
-          type='text'
           value={userData.name}
-          onChange={(e) =>
-            setUserData((prev) => ({ ...prev, name: e.target.value }))
-          }
+          onChange={handleChange('name')}
         />
       ) : (
         <p className='mt-4 font-medium text-neutral-800 text-3xl'>
@@ -66,52 +199,40 @@ export const MyProfile = () => {
 
       <div className='gap-y-2.5 grid grid-cols-[1fr_3fr] mt-3 text-neutral-700'>
         <p className='font-medium'>Email ID:</p>
-        <p className='text-blue-500'>{userData.email}</p>
+        <p className='h-5 text-blue-500'>{userData.email}</p>
 
         <p className='font-medium'>Phone:</p>
         {isEdit ? (
           <input
             className='bg-gray-100 max-w-52'
-            type='text'
+            required
             value={userData.phone}
-            onChange={(e) =>
-              setUserData((prev) => ({ ...prev, phone: e.target.value }))
-            }
+            onChange={handleChange('phone')}
           />
         ) : (
-          <p className='text-blue-500'>{userData.phone}</p>
+          <p className='h-5 text-blue-500'>{userData.phone}</p>
         )}
 
         <p className='font-medium'>Address:</p>
         {isEdit ? (
-          <p className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2'>
             <input
               className='bg-gray-100'
-              type='text'
+              required
               value={userData.address.line1}
-              onChange={(e) =>
-                setUserData((prev) => ({
-                  ...prev,
-                  address: { ...prev.address, line1: e.target.value },
-                }))
-              }
+              onChange={handleAddressChange('line1')}
             />
             <input
               className='bg-gray-100'
-              type='text'
+              required
               value={userData.address.line2}
-              onChange={(e) =>
-                setUserData((prev) => ({
-                  ...prev,
-                  address: { ...prev.address, line2: e.target.value },
-                }))
-              }
+              onChange={handleAddressChange('line2')}
             />
-          </p>
+          </div>
         ) : (
           <p className='flex flex-col gap-2 text-gray-500'>
-            <span>{userData.address.line1}</span>
-            <span>{userData.address.line2}</span>
+            <span className='h-5'>{userData.address.line1}</span>
+            <span className='h-5'>{userData.address.line2}</span>
           </p>
         )}
       </div>
@@ -123,10 +244,9 @@ export const MyProfile = () => {
         {isEdit ? (
           <select
             className='bg-gray-100 max-w-28'
+            required
             value={userData.gender}
-            onChange={(e) =>
-              setUserData((prev) => ({ ...prev, gender: e.target.value }))
-            }
+            onChange={handleChange('gender')}
           >
             {GENDER_OPTIONS.map((gender) => (
               <option key={gender} value={gender}>
@@ -135,21 +255,20 @@ export const MyProfile = () => {
             ))}
           </select>
         ) : (
-          <p className='text-gray-500'>{userData.gender}</p>
+          <p className='h-5 text-gray-500'>{userData.gender}</p>
         )}
 
         <p className='font-medium'>Birthday:</p>
         {isEdit ? (
           <input
             className='bg-gray-100 max-w-28'
+            required
             type='date'
             value={userData.dob}
-            onChange={(e) =>
-              setUserData((prev) => ({ ...prev, dob: e.target.value }))
-            }
+            onChange={handleChange('dob')}
           />
         ) : (
-          <p className='text-gray-500'>{userData.dob}</p>
+          <p className='h-[22px] text-gray-500'>{userData.dob}</p>
         )}
       </div>
 
@@ -157,27 +276,29 @@ export const MyProfile = () => {
         {isEdit ? (
           <div className='flex gap-2'>
             <button
-              onClick={() => setIsEdit(!isEdit)}
+              type='button'
+              onClick={() => dispatch({ type: 'TOGGLE_EDIT' })}
               className='hover:bg-red-600 px-8 py-2 border rounded-full hover:text-white transition-all duration-300'
             >
               Cancel
             </button>
             <button
+              type='submit'
               className='hover:bg-primary px-8 py-2 border border-primary rounded-full hover:text-white transition-all duration-300'
-              onClick={() => setIsEdit(!isEdit)}
             >
               Save Information
             </button>
           </div>
         ) : (
           <button
+            type='button'
+            onClick={() => dispatch({ type: 'TOGGLE_EDIT' })}
             className='hover:bg-primary px-8 py-2 border border-primary rounded-full hover:text-white transition-all duration-300'
-            onClick={() => setIsEdit(!isEdit)}
           >
             Edit
           </button>
         )}
       </div>
-    </div>
+    </form>
   );
 };

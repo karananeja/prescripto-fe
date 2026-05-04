@@ -31,6 +31,7 @@ export const Login = () => {
 
       navigate('/');
     } catch (error) {
+      toast.error((error as Error).message);
       console.error(error);
     }
   };
@@ -50,7 +51,6 @@ export const Login = () => {
             <p>Full Name</p>
             <input
               className='mt-1 p-2 border border-zinc-300 rounded w-full'
-              type='text'
               value={name}
               onChange={(e) => setName(e.target.value)}
               required

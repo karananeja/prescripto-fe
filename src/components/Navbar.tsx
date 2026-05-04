@@ -13,7 +13,7 @@ const PATH_OPTIONS = [
 ];
 
 export const Navbar = () => {
-  const { token, setUserToken } = useAppContext();
+  const { setUserToken, token, userDetails } = useAppContext();
 
   const [showMenu, setShowMenu] = useState(false);
 
@@ -56,7 +56,7 @@ export const Navbar = () => {
           <div className='group relative flex items-center gap-2 cursor-pointer'>
             <img
               className='rounded-full w-8'
-              src={assets.profile_pic}
+              src={userDetails.image || assets.profile_pic}
               alt='user-picture'
             />
 

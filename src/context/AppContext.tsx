@@ -25,11 +25,22 @@ interface Doctor {
   available: boolean;
 }
 
+interface UserData {
+  name: string;
+  email: string;
+  image: string;
+  address: { line1: string; line2: string };
+  gender: string;
+  dob: string;
+  phone: string;
+}
+
 type AppContextType = {
   currencySymbol: string;
   doctors: Doctor[];
   setUserToken: (token: string) => void;
   token: string;
+  userDetails: UserData;
 };
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -37,6 +48,15 @@ const AppContext = createContext<AppContextType | null>(null);
 export const AppContextProvider = ({ children }: PropsType) => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [token, setToken] = useState(localStorage.getItem('userToken') || '');
+  const [userDetails, setUserDetails] = useState<UserData>({
+    name: '',
+    email: '',
+    image: '',
+    address: { line1: '', line2: '' },
+    gender: '',
+    dob: '',
+    phone: '',
+  });
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -52,6 +72,20 @@ export const AppContextProvider = ({ children }: PropsType) => {
     fetchDoctors();
   }, []);
 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const res = await api.get('/user/get-user-info');
+        setUserDetails(res.data.user);
+      } catch (error) {
+        toast.error((error as Error).message);
+        console.error(error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
   const setUserToken = (token: string) => {
     localStorage.setItem('userToken', token);
     setToken(token);
@@ -64,6 +98,7 @@ export const AppContextProvider = ({ children }: PropsType) => {
     doctors,
     setUserToken,
     token,
+    userDetails,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
