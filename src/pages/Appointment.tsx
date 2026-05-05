@@ -86,6 +86,7 @@ export const Appointment = () => {
       const payload = { docId, slotDate, slotTime };
       const res = await api.post('/user/book-appointment', payload);
       toast.success(res.data.message);
+      navigate('/my-appointments');
     } catch (error) {
       toast.error((error as Error).message);
       console.error(error);
