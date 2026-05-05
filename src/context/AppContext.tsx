@@ -11,33 +11,10 @@ import { api } from '../lib/api-client';
 
 type PropsType = { children: ReactNode };
 
-interface Doctor {
-  _id: string;
-  name: string;
-  email: string;
-  experience: string;
-  fee: number;
-  specialty: string;
-  degree: string;
-  address: { line1: string; line2: string };
-  about: string;
-  image: string;
-  available: boolean;
-}
-
-interface UserData {
-  name: string;
-  email: string;
-  image: string;
-  address: { line1: string; line2: string };
-  gender: string;
-  dob: string;
-  phone: string;
-}
-
 type AppContextType = {
   currencySymbol: string;
   doctors: Doctor[];
+  fetchDoctors: () => void;
   setUserToken: (token: string) => void;
   token: string;
   userDetails: UserData;
@@ -58,17 +35,17 @@ export const AppContextProvider = ({ children }: PropsType) => {
     phone: '',
   });
 
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const res = await api.get('/doctor/get-all-doctors');
-        setDoctors(res.data.doctors);
-      } catch (error) {
-        toast.error((error as Error).message);
-        console.error(error);
-      }
-    };
+  const fetchDoctors = async () => {
+    try {
+      const res = await api.get('/doctor/get-all-doctors');
+      setDoctors(res.data.doctors);
+    } catch (error) {
+      toast.error((error as Error).message);
+      console.error(error);
+    }
+  };
 
+  useEffect(() => {
     fetchDoctors();
   }, []);
 
@@ -98,6 +75,7 @@ export const AppContextProvider = ({ children }: PropsType) => {
   const value: AppContextType = {
     currencySymbol,
     doctors,
+    fetchDoctors,
     setUserToken,
     token,
     userDetails,

@@ -10,7 +10,7 @@ import { cn } from '../utils';
 
 const DAYS_OF_WEEK = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-const getSlots = () => {
+const getSlots = (doctorInfo?: Doctor) => {
   const today = new Date();
   const timeSlots: { datetime: Date; time: string }[][] = [];
   const isLateEvening = today.getHours() >= 21;
@@ -43,10 +43,19 @@ const getSlots = () => {
         minute: '2-digit',
       });
 
-      dayTimeSlots.push({
-        datetime: new Date(currentDate),
-        time: formattedTime,
-      });
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1;
+      const year = currentDate.getFullYear();
+      const slotDate = `${day}_${month}_${year}`;
+      const slotTime = formattedTime;
+      const isSlotAvailable =
+        !doctorInfo?.slotsBooked[slotDate]?.includes(slotTime);
+
+      if (isSlotAvailable)
+        dayTimeSlots.push({
+          datetime: new Date(currentDate),
+          time: formattedTime,
+        });
 
       currentDate.setMinutes(currentDate.getMinutes() + 30);
     }
@@ -58,7 +67,7 @@ const getSlots = () => {
 };
 
 export const Appointment = () => {
-  const { currencySymbol, doctors, token } = useAppContext();
+  const { currencySymbol, doctors, fetchDoctors, token } = useAppContext();
 
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState('');
@@ -66,9 +75,8 @@ export const Appointment = () => {
   const navigate = useNavigate();
   const { docId } = useParams();
 
-  const doctorSlots = getSlots();
-
   const doctorInfo = doctors.find((doctor) => doctor._id === docId);
+  const doctorSlots = getSlots(doctorInfo);
 
   const handleBookAppointment = async () => {
     if (!token) {
@@ -86,6 +94,7 @@ export const Appointment = () => {
       const payload = { docId, slotDate, slotTime };
       const res = await api.post('/user/book-appointment', payload);
       toast.success(res.data.message);
+      fetchDoctors();
       navigate('/my-appointments');
     } catch (error) {
       toast.error((error as Error).message);

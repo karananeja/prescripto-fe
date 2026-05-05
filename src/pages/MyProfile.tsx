@@ -5,16 +5,6 @@ import { assets } from '../assets/assets';
 import { useAppContext } from '../context/AppContext';
 import { api } from '../lib/api-client';
 
-interface UserData {
-  name: string;
-  email: string;
-  image: string;
-  address: { line1: string; line2: string };
-  gender: string;
-  dob: string;
-  phone: string;
-}
-
 const GENDER_OPTIONS = ['Male', 'Female'];
 
 type State = {
