@@ -22,3 +22,24 @@ interface UserData {
   dob: string;
   phone: string;
 }
+
+interface Appointment {
+  _id: string;
+  userId: string;
+  docId: string;
+  slotDate: string;
+  slotTime: string;
+  userData: { name: string; email: string; phone: string };
+  docData: {
+    name: string;
+    specialty: string;
+    fee: number;
+    image: string;
+    address: { line1: string; line2: string };
+  };
+  amount: number;
+  date: number;
+  cancelled: boolean;
+  payment: boolean;
+  isCompleted: boolean;
+}

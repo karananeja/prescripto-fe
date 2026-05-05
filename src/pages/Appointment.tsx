@@ -85,6 +85,11 @@ export const Appointment = () => {
       return;
     }
 
+    if (!slotTime) {
+      toast.error('Please select a timeslot');
+      return;
+    }
+
     try {
       const date = doctorSlots[slotIndex][0].datetime;
       const day = date.getDate();
