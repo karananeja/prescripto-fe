@@ -206,7 +206,7 @@ export const MyProfile = () => {
           <input
             className='bg-gray-100 max-w-52'
             required
-            value={userData.phone}
+            value={userData.phone || ''}
             onChange={handleChange('phone')}
           />
         ) : (
@@ -245,9 +245,10 @@ export const MyProfile = () => {
           <select
             className='bg-gray-100 max-w-28'
             required
-            value={userData.gender}
+            value={userData.gender || ''}
             onChange={handleChange('gender')}
           >
+            <option value=''>Select Gender</option>
             {GENDER_OPTIONS.map((gender) => (
               <option key={gender} value={gender}>
                 {gender}
@@ -264,7 +265,7 @@ export const MyProfile = () => {
             className='bg-gray-100 max-w-28'
             required
             type='date'
-            value={userData.dob}
+            value={userData.dob || ''}
             onChange={handleChange('dob')}
           />
         ) : (
