@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { assets } from '../assets/assets';
 import { RelatedDoctors } from '../components/RelatedDoctors';
 import { useAppContext } from '../context/AppContext';
+import { api } from '../lib/api-client';
 import { cn } from '../utils';
 
 const DAYS_OF_WEEK = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -56,16 +58,39 @@ const getSlots = () => {
 };
 
 export const Appointment = () => {
+  const { currencySymbol, doctors, token } = useAppContext();
+
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState('');
 
+  const navigate = useNavigate();
   const { docId } = useParams();
-
-  const { currencySymbol, doctors } = useAppContext();
 
   const doctorSlots = getSlots();
 
   const doctorInfo = doctors.find((doctor) => doctor._id === docId);
+
+  const handleBookAppointment = async () => {
+    if (!token) {
+      toast.warn('Login to book an appointment');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const date = doctorSlots[slotIndex][0].datetime;
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const slotDate = `${day}_${month}_${year}`;
+      const payload = { docId, slotDate, slotTime };
+      const res = await api.post('/user/book-appointment', payload);
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error((error as Error).message);
+      console.error(error);
+    }
+  };
 
   return (
     doctorInfo && (
@@ -153,7 +178,10 @@ export const Appointment = () => {
             ))}
           </div>
 
-          <button className='bg-primary my-6 px-20 py-3 rounded-full font-light text-white text-sm'>
+          <button
+            className='bg-primary my-6 px-20 py-3 rounded-full font-light text-white text-sm'
+            onClick={handleBookAppointment}
+          >
             Book an appointment
           </button>
         </div>

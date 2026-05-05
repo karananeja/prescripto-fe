@@ -17,7 +17,7 @@ export const RelatedDoctors = (props: PropsType) => {
 
   return (
     <div className='flex flex-col items-center gap-4 md:mx-10 my-16 text-gray-900'>
-      <h1 className='font-medium text-3xl'>RelatedDoctors</h1>
+      <h1 className='font-medium text-3xl'>Related Doctors</h1>
 
       <p className='sm:w-1/3 text-sm text-center'>
         Simply browse through our extensive list of trusted doctors.
