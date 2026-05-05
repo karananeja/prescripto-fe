@@ -73,6 +73,8 @@ export const AppContextProvider = ({ children }: PropsType) => {
   }, []);
 
   useEffect(() => {
+    if (!token) return;
+
     const fetchUserDetails = async () => {
       try {
         const res = await api.get('/user/get-user-info');
@@ -84,7 +86,7 @@ export const AppContextProvider = ({ children }: PropsType) => {
     };
 
     fetchUserDetails();
-  }, []);
+  }, [token]);
 
   const setUserToken = (token: string) => {
     localStorage.setItem('userToken', token);
