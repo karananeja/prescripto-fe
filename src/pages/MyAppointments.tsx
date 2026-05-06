@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { useAppContext } from '../context/AppContext';
 import { api } from '../lib/api-client';
 
 const MONTHS = [
@@ -19,6 +20,8 @@ const MONTHS = [
 ];
 
 export const MyAppointments = () => {
+  const { fetchDoctors } = useAppContext();
+
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
   useEffect(() => {
@@ -47,6 +50,7 @@ export const MyAppointments = () => {
             : appointment
         )
       );
+      fetchDoctors();
     } catch (error) {
       toast.error((error as Error).message);
       console.error(error);
@@ -98,12 +102,21 @@ export const MyAppointments = () => {
                     Pay Online
                   </button>
                 )}
-                <button
-                  className='hover:bg-red-600 py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'
-                  onClick={() => handleCancelAppointment(appointment._id)}
-                >
-                  {appointment.cancelled ? 'Cancelled' : 'Cancel Appointment'}
-                </button>
+
+                {!appointment.cancelled && (
+                  <button
+                    className='hover:bg-red-600 py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'
+                    onClick={() => handleCancelAppointment(appointment._id)}
+                  >
+                    Cancel Appointment
+                  </button>
+                )}
+
+                {appointment.cancelled && (
+                  <button className='py-2 border rounded sm:min-w-48 text-red-400 text-sm text-center'>
+                    Appointment Cancelled
+                  </button>
+                )}
               </div>
             </div>
           );
