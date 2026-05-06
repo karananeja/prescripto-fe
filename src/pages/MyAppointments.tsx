@@ -22,9 +22,9 @@ export const MyAppointments = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
   useEffect(() => {
-    const fetchDoctors = async () => {
+    const fetchAppointments = async () => {
       try {
-        const res = await api.get('/user/get-my-appointments');
+        const res = await api.get('/user/get-appointments');
         setAppointments(res.data.appointments);
       } catch (error) {
         toast.error((error as Error).message);
@@ -32,8 +32,26 @@ export const MyAppointments = () => {
       }
     };
 
-    fetchDoctors();
+    fetchAppointments();
   }, []);
+
+  const handleCancelAppointment = async (appointmentId: string) => {
+    try {
+      const payload = { appointmentId };
+      const res = await api.post('/user/cancel-appointment', payload);
+      toast.success(res.data.message);
+      setAppointments((prev) =>
+        prev.map((appointment) =>
+          appointment._id === appointmentId
+            ? { ...appointment, cancelled: true }
+            : appointment
+        )
+      );
+    } catch (error) {
+      toast.error((error as Error).message);
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -75,11 +93,16 @@ export const MyAppointments = () => {
               <div />
 
               <div className='flex flex-col justify-end gap-2'>
-                <button className='hover:bg-primary py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'>
-                  Pay Online
-                </button>
-                <button className='hover:bg-red-600 py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'>
-                  Cancel Appointment
+                {!appointment.cancelled && !appointment.payment && (
+                  <button className='hover:bg-primary py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'>
+                    Pay Online
+                  </button>
+                )}
+                <button
+                  className='hover:bg-red-600 py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'
+                  onClick={() => handleCancelAppointment(appointment._id)}
+                >
+                  {appointment.cancelled ? 'Cancelled' : 'Cancel Appointment'}
                 </button>
               </div>
             </div>
