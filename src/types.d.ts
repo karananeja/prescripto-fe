@@ -29,7 +29,13 @@ interface Appointment {
   docId: string;
   slotDate: string;
   slotTime: string;
-  userData: { name: string; email: string; phone: string };
+  userData: {
+    name: string;
+    email: string;
+    phone: string;
+    dob: string;
+    image: string;
+  };
   docData: {
     name: string;
     specialty: string;
