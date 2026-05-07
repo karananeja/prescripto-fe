@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { env } from '../config/env';
 import { useAppContext } from '../context/AppContext';
 import { api } from '../lib/api-client';
 
@@ -57,6 +58,47 @@ export const MyAppointments = () => {
     }
   };
 
+  const initializePayment = async (order: RazorpayOrder) => {
+    try {
+      const options = {
+        key: env.RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Appointment Payment',
+        description: 'Payment for your appointment',
+        order_id: order.id,
+        receipt: order.receipt,
+        handler: async (response: RazorpayResponse) => {
+          const payload = { razorpay_order_id: response.razorpay_order_id };
+          const res = await api.post('/user/verify-payment', payload);
+          toast.success(res.data.message);
+          setAppointments((prev) =>
+            prev.map((appointment) =>
+              appointment._id === order.receipt
+                ? { ...appointment, payment: true }
+                : appointment
+            )
+          );
+        },
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  };
+
+  const handleMakePayment = async (appointmentId: string) => {
+    try {
+      const payload = { appointmentId };
+      const res = await api.post('/user/make-payment', payload);
+      initializePayment(res.data.order);
+    } catch (error) {
+      toast.error((error as Error).message);
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <p className='mt-12 pb-3 border-b font-medium text-zinc-700'>
@@ -98,8 +140,20 @@ export const MyAppointments = () => {
 
               <div className='flex flex-col justify-end gap-2'>
                 {!appointment.cancelled && !appointment.payment && (
-                  <button className='hover:bg-primary py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'>
+                  <button
+                    className='hover:bg-primary py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'
+                    onClick={() => handleMakePayment(appointment._id)}
+                  >
                     Pay Online
+                  </button>
+                )}
+
+                {!appointment.cancelled && appointment.payment && (
+                  <button
+                    className='bg-indigo-50 py-2 border rounded sm:min-w-48 text-stone-500 text-sm text-center'
+                    disabled
+                  >
+                    Paid
                   </button>
                 )}
 
@@ -113,7 +167,10 @@ export const MyAppointments = () => {
                 )}
 
                 {appointment.cancelled && (
-                  <button className='py-2 border rounded sm:min-w-48 text-red-400 text-sm text-center'>
+                  <button
+                    className='py-2 border rounded sm:min-w-48 text-red-400 text-sm text-center'
+                    disabled
+                  >
                     Appointment Cancelled
                   </button>
                 )}

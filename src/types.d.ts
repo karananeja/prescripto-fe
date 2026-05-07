@@ -43,3 +43,17 @@ interface Appointment {
   payment: boolean;
   isCompleted: boolean;
 }
+
+interface RazorpayOrder {
+  id: string;
+  amount: number;
+  currency: string;
+  receipt: string;
+  notes: Record<string, unknown>;
+}
+
+interface RazorpayResponse {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}

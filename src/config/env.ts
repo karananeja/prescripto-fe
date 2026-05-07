@@ -2,7 +2,10 @@ import * as z from 'zod';
 
 // for type safe env
 const createEnv = () => {
-  const EnvSchema = z.object({ API_URL: z.string() });
+  const EnvSchema = z.object({
+    API_URL: z.string(),
+    RAZORPAY_KEY_ID: z.string(),
+  });
 
   const envVars = Object.entries(import.meta.env).reduce<
     Record<string, string>
