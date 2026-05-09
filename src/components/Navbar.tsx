@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { assets } from '../assets/assets';
+import { env } from '../config/env';
 import { useAppContext } from '../context/AppContext';
 import { cn } from '../utils';
 
@@ -49,6 +50,13 @@ export const Navbar = () => {
             )}
           </NavLink>
         ))}
+        <a
+          target='_blank'
+          href={env.ADMIN_PANEL_URL}
+          className='px-5 py-1.5 border rounded-full text-xs'
+        >
+          Admin Panel
+        </a>
       </ul>
 
       <div className='flex items-center gap-4'>

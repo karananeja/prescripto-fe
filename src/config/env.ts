@@ -5,6 +5,7 @@ const createEnv = () => {
   const EnvSchema = z.object({
     API_URL: z.string(),
     RAZORPAY_KEY_ID: z.string(),
+    ADMIN_PANEL_URL: z.string(),
   });
 
   const envVars = Object.entries(import.meta.env).reduce<
