@@ -139,25 +139,29 @@ export const MyAppointments = () => {
               <div />
 
               <div className='flex flex-col justify-end gap-2'>
-                {!appointment.cancelled && !appointment.payment && (
-                  <button
-                    className='hover:bg-primary py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'
-                    onClick={() => handleMakePayment(appointment._id)}
-                  >
-                    Pay Online
-                  </button>
-                )}
+                {!appointment.cancelled &&
+                  !appointment.payment &&
+                  !appointment.isCompleted && (
+                    <button
+                      className='hover:bg-primary py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'
+                      onClick={() => handleMakePayment(appointment._id)}
+                    >
+                      Pay Online
+                    </button>
+                  )}
 
-                {!appointment.cancelled && appointment.payment && (
-                  <button
-                    className='bg-indigo-50 py-2 border rounded sm:min-w-48 text-stone-500 text-sm text-center'
-                    disabled
-                  >
-                    Paid
-                  </button>
-                )}
+                {!appointment.cancelled &&
+                  appointment.payment &&
+                  !appointment.isCompleted && (
+                    <button
+                      className='bg-indigo-50 py-2 border rounded sm:min-w-48 text-stone-500 text-sm text-center'
+                      disabled
+                    >
+                      Paid
+                    </button>
+                  )}
 
-                {!appointment.cancelled && (
+                {!appointment.cancelled && !appointment.isCompleted && (
                   <button
                     className='hover:bg-red-600 py-2 border rounded sm:min-w-48 text-stone-500 hover:text-white text-sm text-center transition-all duration-300'
                     onClick={() => handleCancelAppointment(appointment._id)}
@@ -166,12 +170,21 @@ export const MyAppointments = () => {
                   </button>
                 )}
 
-                {appointment.cancelled && (
+                {appointment.cancelled && !appointment.isCompleted && (
                   <button
                     className='py-2 border rounded sm:min-w-48 text-red-400 text-sm text-center'
                     disabled
                   >
                     Appointment Cancelled
+                  </button>
+                )}
+
+                {appointment.isCompleted && (
+                  <button
+                    className='py-2 border rounded sm:min-w-48 text-green-400 text-sm text-center'
+                    disabled
+                  >
+                    Completed
                   </button>
                 )}
               </div>
