@@ -193,12 +193,19 @@ export const Appointment = () => {
             ))}
           </div>
 
-          <button
-            className='bg-primary my-6 px-20 py-3 rounded-full font-light text-white text-sm'
-            onClick={handleBookAppointment}
-          >
-            Book an appointment
-          </button>
+          {doctorInfo?.available ? (
+            <button
+              className='bg-primary my-6 px-20 py-3 rounded-full font-light text-white text-sm'
+              onClick={handleBookAppointment}
+              disabled={!doctorInfo?.available}
+            >
+              Book an appointment
+            </button>
+          ) : (
+            <button className='my-6 px-20 py-3 border border-gray-500 rounded-full font-light text-gray-500 text-sm'>
+              Doctor is not available
+            </button>
+          )}
         </div>
 
         <RelatedDoctors docId={docId!} specialty={doctorInfo.specialty} />
