@@ -20,19 +20,57 @@ const MONTHS = [
   'Dec',
 ];
 
+const AppointmentSkeleton = () => {
+  return (
+    <div className='sm:flex gap-4 sm:gap-6 grid grid-cols-[1fr_2fr] py-2 border-b animate-pulse'>
+      {/* Image */}
+      <div className='bg-gray-200 rounded size-32' />
+
+      {/* Content */}
+      <div className='flex-1'>
+        <div className='bg-gray-200 mb-1 rounded w-40 h-5' />
+
+        <div className='bg-gray-200 mb-1 rounded w-28 h-4' />
+
+        <div className='bg-gray-200 mb-1 rounded w-20 h-4' />
+
+        <div className='bg-gray-200 mb-1 rounded w-52 h-3' />
+
+        <div className='bg-gray-200 mb-3 rounded w-44 h-3' />
+
+        <div className='bg-gray-200 rounded w-64 h-4' />
+      </div>
+
+      {/* Spacer */}
+      <div />
+
+      {/* Buttons */}
+      <div className='flex flex-col justify-end gap-2'>
+        <div className='bg-gray-200 rounded sm:min-w-48 h-10' />
+
+        <div className='bg-gray-200 rounded sm:min-w-48 h-10' />
+      </div>
+    </div>
+  );
+};
+
 export const MyAppointments = () => {
   const { fetchDoctors } = useAppContext();
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
+        setIsLoading(true);
         const res = await api.get('/user/get-appointments');
         setAppointments(res.data.appointments);
       } catch (error) {
         toast.error((error as Error).message);
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -105,7 +143,11 @@ export const MyAppointments = () => {
         My Appointments
       </p>
 
-      {appointments.length > 0 ? (
+      {isLoading ? (
+        Array.from({ length: 5 }).map((_, index) => (
+          <AppointmentSkeleton key={index} />
+        ))
+      ) : appointments.length > 0 ? (
         appointments.map((appointment) => {
           const [date, month, year] = appointment.slotDate.split('_');
 

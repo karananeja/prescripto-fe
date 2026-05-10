@@ -71,8 +71,59 @@ function reducer(state: State, action: Action): State {
   }
 }
 
+const ProfileSkeleton = () => {
+  return (
+    <div className='flex flex-col gap-2 max-w-lg animate-pulse'>
+      {/* Profile Image */}
+      <div className='bg-gray-200 rounded w-36 h-36' />
+
+      {/* Name */}
+      <div className='bg-gray-200 mt-4 rounded w-52 h-8' />
+
+      <div className='bg-gray-200 my-2 w-full h-px' />
+
+      {/* Contact Heading */}
+      <div className='bg-gray-200 mb-3 rounded w-44 h-4' />
+
+      {/* Contact Info */}
+      <div className='gap-y-4 grid grid-cols-[1fr_3fr]'>
+        <div className='bg-gray-200 rounded w-20 h-4' />
+        <div className='bg-gray-200 rounded w-56 h-4' />
+
+        <div className='bg-gray-200 rounded w-20 h-4' />
+        <div className='bg-gray-200 rounded w-40 h-4' />
+
+        <div className='bg-gray-200 rounded w-20 h-4' />
+
+        <div className='flex flex-col gap-2'>
+          <div className='bg-gray-200 rounded w-64 h-4' />
+          <div className='bg-gray-200 rounded w-52 h-4' />
+        </div>
+      </div>
+
+      {/* Basic Info Heading */}
+      <div className='bg-gray-200 mt-6 mb-3 rounded w-40 h-4' />
+
+      {/* Basic Info */}
+      <div className='gap-y-4 grid grid-cols-[1fr_3fr]'>
+        <div className='bg-gray-200 rounded w-20 h-4' />
+        <div className='bg-gray-200 rounded w-28 h-4' />
+
+        <div className='bg-gray-200 rounded w-20 h-4' />
+        <div className='bg-gray-200 rounded w-32 h-4' />
+      </div>
+
+      {/* Buttons */}
+      <div className='flex gap-2 mt-10'>
+        <div className='bg-gray-200 rounded-full w-32 h-10' />
+        <div className='bg-gray-200 rounded-full w-44 h-10' />
+      </div>
+    </div>
+  );
+};
+
 export const MyProfile = () => {
-  const { userDetails } = useAppContext();
+  const { isUserLoading, userDetails } = useAppContext();
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -137,7 +188,9 @@ export const MyProfile = () => {
     }
   };
 
-  return (
+  return isUserLoading ? (
+    <ProfileSkeleton />
+  ) : (
     <form
       onSubmit={handleSubmit}
       className='flex flex-col gap-2 max-w-lg text-sm'
@@ -183,7 +236,7 @@ export const MyProfile = () => {
         </p>
       )}
 
-      <hr className='bg-zinc-400 border-none h-[1px]' />
+      <hr className='bg-zinc-400 border-none h-px' />
 
       <p className='mt-3 text-neutral-500 underline'>CONTACT INFORMATION</p>
 

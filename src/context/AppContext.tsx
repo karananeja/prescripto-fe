@@ -15,6 +15,8 @@ type AppContextType = {
   currencySymbol: string;
   doctors: Doctor[];
   fetchDoctors: () => void;
+  isDoctorsLoading: boolean;
+  isUserLoading: boolean;
   setUserToken: (token: string) => void;
   token: string;
   userDetails: UserData;
@@ -34,14 +36,19 @@ export const AppContextProvider = ({ children }: PropsType) => {
     dob: '',
     phone: '',
   });
+  const [isDoctorsLoading, setIsDoctorsLoading] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
   const fetchDoctors = async () => {
     try {
+      setIsDoctorsLoading(true);
       const res = await api.get('/doctor/get-all-doctors');
       setDoctors(res.data.doctors);
     } catch (error) {
       toast.error((error as Error).message);
       console.error(error);
+    } finally {
+      setIsDoctorsLoading(false);
     }
   };
 
@@ -54,11 +61,14 @@ export const AppContextProvider = ({ children }: PropsType) => {
 
     const fetchUserDetails = async () => {
       try {
+        setIsUserLoading(true);
         const res = await api.get('/user/get-user-info');
         setUserDetails(res.data.user);
       } catch (error) {
         toast.error((error as Error).message);
         console.error(error);
+      } finally {
+        setIsUserLoading(false);
       }
     };
 
@@ -76,6 +86,8 @@ export const AppContextProvider = ({ children }: PropsType) => {
     currencySymbol,
     doctors,
     fetchDoctors,
+    isDoctorsLoading,
+    isUserLoading,
     setUserToken,
     token,
     userDetails,
