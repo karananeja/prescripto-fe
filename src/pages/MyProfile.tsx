@@ -189,7 +189,7 @@ export const MyProfile = () => {
 
       <div className='gap-y-2.5 grid grid-cols-[1fr_3fr] mt-3 text-neutral-700'>
         <p className='font-medium'>Email ID:</p>
-        <p className='h-5 text-blue-500'>{userData.email}</p>
+        <p className='h-5 text-blue-500'>{userData.email || '-'}</p>
 
         <p className='font-medium'>Phone:</p>
         {isEdit ? (
@@ -200,7 +200,7 @@ export const MyProfile = () => {
             onChange={handleChange('phone')}
           />
         ) : (
-          <p className='h-5 text-blue-500'>{userData.phone}</p>
+          <p className='h-5 text-blue-500'>{userData.phone || '-'}</p>
         )}
 
         <p className='font-medium'>Address:</p>
@@ -221,8 +221,8 @@ export const MyProfile = () => {
           </div>
         ) : (
           <p className='flex flex-col gap-2 text-gray-500'>
-            <span className='h-5'>{userData.address.line1}</span>
-            <span className='h-5'>{userData.address.line2}</span>
+            <span className='h-5'>{userData.address.line1 || '-'}</span>
+            <span className='h-5'>{userData.address.line2 || '-'}</span>
           </p>
         )}
       </div>
@@ -246,7 +246,7 @@ export const MyProfile = () => {
             ))}
           </select>
         ) : (
-          <p className='h-5 text-gray-500'>{userData.gender}</p>
+          <p className='h-5 text-gray-500'>{userData.gender || '-'}</p>
         )}
 
         <p className='font-medium'>Birthday:</p>
@@ -259,7 +259,7 @@ export const MyProfile = () => {
             onChange={handleChange('dob')}
           />
         ) : (
-          <p className='h-[22px] text-gray-500'>{userData.dob}</p>
+          <p className='h-[22px] text-gray-500'>{userData.dob || '-'}</p>
         )}
       </div>
 
