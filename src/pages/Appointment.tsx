@@ -13,7 +13,14 @@ const DAYS_OF_WEEK = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 const getSlots = (doctorInfo?: Doctor) => {
   const today = new Date();
   const timeSlots: { datetime: Date; time: string }[][] = [];
-  const isLateEvening = today.getHours() >= 21;
+
+  // Last possible slot is 8:30 PM
+  const lastSlotTime = new Date(today);
+  lastSlotTime.setHours(20, 30, 0, 0);
+
+  // Skip today if we're past the last slot
+  const isLateEvening = today > lastSlotTime;
+
   const startIdx = isLateEvening ? 1 : 0;
   const endIdx = startIdx + 7;
 
@@ -21,18 +28,39 @@ const getSlots = (doctorInfo?: Doctor) => {
     const currentDate = new Date(today);
     currentDate.setDate(today.getDate() + idx);
 
-    const endTime = new Date();
-    endTime.setDate(today.getDate() + idx);
+    // Clinic closes at 9 PM
+    const endTime = new Date(currentDate);
     endTime.setHours(21, 0, 0, 0);
 
-    if (today.getDate() === currentDate.getDate()) {
-      currentDate.setHours(
-        currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10
-      );
-      currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
+    // TODAY
+    if (today.toDateString() === currentDate.toDateString()) {
+      const now = new Date();
+
+      let hour = now.getHours();
+      let minute = now.getMinutes();
+
+      // Round to next 30-min slot
+      if (minute === 0) {
+        minute = 0;
+      } else if (minute <= 30) {
+        minute = 30;
+      } else {
+        hour += 1;
+        minute = 0;
+      }
+
+      currentDate.setHours(hour, minute, 0, 0);
+
+      // Earliest slot = 8:30 AM
+      const minStart = new Date(currentDate);
+      minStart.setHours(8, 30, 0, 0);
+
+      if (currentDate < minStart) {
+        currentDate.setHours(8, 30, 0, 0);
+      }
     } else {
-      currentDate.setHours(10);
-      currentDate.setMinutes(0);
+      // Future days start at 8:30 AM
+      currentDate.setHours(8, 30, 0, 0);
     }
 
     const dayTimeSlots: { datetime: Date; time: string }[] = [];
@@ -57,6 +85,7 @@ const getSlots = (doctorInfo?: Doctor) => {
           time: formattedTime,
         });
 
+      // Move to next slot
       currentDate.setMinutes(currentDate.getMinutes() + 30);
     }
 
